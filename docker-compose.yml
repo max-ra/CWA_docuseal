@@ -27,6 +27,13 @@ services:
       FORCE_SSL: true
       HOST: '${APPLICATION_FQDN}'
       DATABASE_URL: 'postgresql://${DB_USER:-docuseal}:${DB_PASSWD:-?}@${DB_HOST:-postgres}:${DB_PORT:-5432}/${DB_NAME:-docuseal}'
+      SMTP_USERNAME: '${MAILER_USER}'
+      SMTP_PASSWORD: '${MAILER_PASSWD}'
+      SMTP_FROM: '${MAILER_FROM:-docuseal@${APPLICATION_FQDN}}'
+      SMTP_ADDRESS: '${SMTP_ADDR}'
+      SMTP_PORT: '${SMTP_PORT:-587}'
+      SMTP_DOMAIN: '${APPLICATION_FQDN}'
+      SMTP_AUTHENTICATION: 'plain'
     networks:
       - database
       - proxy

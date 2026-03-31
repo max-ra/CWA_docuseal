@@ -1,0 +1,32 @@
+networks:
+  proxy:
+    name: backbone_proxy
+    external: true
+  database:
+    name: backbone_database
+    external: true
+
+services:
+  docuseal:
+    image: docuseal/docuseal:2.4.2
+    container_name: docuseal 
+    restart: always
+    volumes:
+      - "./docuseal:/data/docuseal"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=backbone_proxy
+      - traefik.http.routers.docuseal.tls=true
+      - traefik.http.routers.docuseal.tls.certresolver=${CERTRESOLVER:-}
+      - traefik.http.routers.docuseal.entryPoints=https
+      - traefik.http.routers.docuseal.rule=Host("${APPLICATION_FQDN}")
+      - traefik.http.routers.docuseal.service=docuseal-service
+      - traefik.http.services.docuseal-service.loadbalancer.server.port=3000
+    environment:
+      TZ: Europe/Berlin
+      FORCE_SSL: true
+      HOST: '${APPLICATION_FQDN}'
+      DATABASE_URL: 'postgresql://${DB_USER:-docuseal}:${DB_PASSWD:-?}@${DB_HOST:-postgres}:${DB_PORT:-5432}/${DB_NAME:-docuseal}'
+    networks:
+      - database
+      - proxy

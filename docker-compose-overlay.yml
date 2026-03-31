@@ -1,0 +1,10 @@
+networks:
+  overlay-database:
+    name: overlay_database
+    driver: overlay
+    external: true
+
+services:
+  docuseal:
+    networks:
+      - overlay-database

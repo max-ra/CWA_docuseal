@@ -8,7 +8,7 @@ networks:
 
 services:
   docuseal:
-    image: docuseal/docuseal:3.3.7
+    image: docuseal/docuseal:3.4.0
     container_name: docuseal 
     restart: always
     volumes:
